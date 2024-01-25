@@ -1,9 +1,4 @@
-// const express = require("express");
-// const app = express();
-// const zod = require("zod");
-// app.use(express.json());
-
-// const schema = zod.array(zod.number());
+// const zod = require( 'zod' );
 
 // function validateInput(obj){
 //   const schema = zod.object({
@@ -11,30 +6,27 @@
 //     password: zod.string().min(8),
 //   })
 //   const response = schema.safeParse(obj);
-//   return response;
+//   console.log(response);
+// }
+// validateInput({
+//   email: 'tzirw@example.com',
+//   password: '12345678'
+// });
+// function kiratsAsyncFunction() {
+//   let p = new Promise(function(resolve) {
+//     // do some async logic here
+//     resolve("hi there!")
+//   });
+//   return p;
 // }
 
-// app.post("/health-check", (req, res) =>{
-//   const kidneys = req.body.kidneys;
-//   const response = schema.safeParse(kidneys);
-//   res.send(response);
+// function main() {
+//   kiratsAsyncFunction().then(function(value) {
+//       console.log(value);
+//   });
+// }
 
-//   // const kidneysLenght = kidneys.length;
-//   // res.send("you have "+ kidneysLenght + " kidneys");
-// })
-
-// app.post('/validate',(req,res)=>{
-//   const response = validateInput(req.body);
-//   if(!response.success){
-//     res.status(400).send(response.error.message);
-//     return;
-//   }
-//   else{
-//      res.send(response);
-//   }
-// })
-// app.use((err,req, res,next) => res.json({error: "something went wrong"}));  
-// app.listen(3000);
+// main();
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const jwtPassword = "123456";
@@ -63,7 +55,13 @@ const ALL_USERS = [
 function userExists(username, password) {
   // write logic to return true or false if this user exists
   // in ALL_USERS array
-return !!ALL_USERS.find(user => user.username === username && user.password === password);
+let Exists = false;
+  for(let i=0; i<ALL_USERS.length; i++){
+    if(ALL_USERS[i].username === username && ALL_USERS[i].password === password){
+      Exists = true;
+    }
+  }
+  return Exists;
 
 }
 
@@ -88,9 +86,6 @@ app.get("/users", function (req, res) {
   try {
     const decoded = jwt.verify(token, jwtPassword);
     const username = decoded.username;
-    res.json({
-      users: ALL_USERS.filter(user => user.username === username),
-    });
     // return a list of users other than this username
   } catch (err) {
     return res.status(403).json({
@@ -99,4 +94,4 @@ app.get("/users", function (req, res) {
   }
 });
 
-app.listen(3000);
+app.listen(3000)
